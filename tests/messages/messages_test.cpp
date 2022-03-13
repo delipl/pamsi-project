@@ -1,6 +1,6 @@
-
+#include <memory>
 #include "doctest/doctest.h"
-#include "messages/package.hpp"
+#include "messages/message.hpp"
 
 TEST_CASE("Package constructor"){
     pamsi::Package package = {1, "first package"};
@@ -19,4 +19,8 @@ TEST_CASE("Package operators"){
     CHECK(p1 < p3);
     CHECK(p3 > p2);
     CHECK_FALSE(p3 < p1);
+}
+
+TEST_CASE("Message constructor"){
+    
 }
