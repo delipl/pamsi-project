@@ -45,6 +45,16 @@ int main() {
     for (auto i = 0u; i < mess.package_list.size(); ++i) {
         std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
     }
-    // Bring in the dummy class from the example source,
-    // just to show that it is accessible from main.cpp.
+
+    for (auto i = 0u; i < mess.package_list.size(); i++) {
+        for (auto j = 1u; j < mess.package_list.size() - i; j++) {
+            if ((*mess.package_list[j - 1]) > *(mess.package_list[j])) {
+                std::swap(mess.package_list[j - 1], mess.package_list[j]);
+            }
+        }
+    }
+
+    for (auto i = 0u; i < mess.package_list.size(); ++i) {
+        std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
+    }
 }
