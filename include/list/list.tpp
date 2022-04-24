@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
-
+#include <iterator>
 namespace pamsi {
 
 template <typename T>
@@ -27,9 +27,7 @@ template <typename T>
 class List {
    public:
     List() = default;
-    // List(std::initializer_list<Node> &list){
-
-    // };
+    
     std::size_t size() const {
         std::shared_ptr<Node<T>> ptr = head;
 
@@ -64,6 +62,7 @@ class List {
         }
     }
 
+
     T &front() {
         if(head == nullptr){
             throw std::overflow_error("List is empty");
@@ -78,9 +77,39 @@ class List {
         return tail->elem;
     }
 
+    T &operator[](const std::size_t index){
+        std::shared_ptr<Node<T>> ptr = head;
+        std::size_t size = 0;
+        
+        while (size < index) {
+            ++size;
+            ptr = ptr->prev;
+        }
+
+        if(ptr == nullptr){
+            throw std::overflow_error("List is overflowed");
+        }
+        return ptr->elem;
+    };
+
    private:
     std::shared_ptr<Node<T>> head;
     std::shared_ptr<Node<T>> tail;
+
+    std::shared_ptr<Node<T>> take_shared(const std::size_t index) {
+        auto ptr = head;
+        std::size_t size = 0;
+
+        while (size < index && ptr != nullptr) {
+            ++size;
+            ptr = ptr->prev;
+        }
+
+        if (ptr == nullptr) {
+            throw std::overflow_error("List is overflowed");
+        }
+        return ptr;
+    };
 };
 
 }  // namespace pamsi
