@@ -17,7 +17,6 @@
 #include "messages/message.hpp"
 
 int main() {
-    std::srand(std::time(NULL));
     std::cout << "C++ PAMSI project "
               << PROJECT_VERSION_MAJOR
               << "."
@@ -39,22 +38,19 @@ int main() {
         "Czy jestes otwarta na wstepna rozmowe w tym temacie?\n"
         "Pozdrawiam\nJan";
 
-    auto elems = std::rand() % 3 + 4;
-    std::cout << "Wiadomosc podzielono na " << elems << " czesci.\n";
-    auto mess = pamsi::Message(payload, elems);
-    for (auto i = 0u; i < mess.package_list.size(); ++i) {
-        std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
-    }
+    // auto elems = std::rand() % 8 + 4;
+    // std::cout << "Wiadomosc podzielono na " << elems << " czesci.\n";
+    // auto mess = pamsi::Message(payload, elems);
 
-    for (auto i = 0u; i < mess.package_list.size(); i++) {
-        for (auto j = 1u; j < mess.package_list.size() - i; j++) {
-            if ((*mess.package_list[j - 1]) > *(mess.package_list[j])) {
-                std::swap(mess.package_list[j - 1], mess.package_list[j]);
-            }
-        }
-    }
+    // std::cout << "\n\n===============================================[Wyslano]==========================================\n\n";
+    // mess.send();
+    // for (auto i = 0u; i < mess.package_list.size(); ++i) {
+    //     std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
+    // }
 
-    for (auto i = 0u; i < mess.package_list.size(); ++i) {
-        std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
-    }
+    // std::cout << "\n\n==============================================[Odebrano]==========================================\n\n";
+    // mess.receive();
+    // for (auto i = 0u; i < mess.package_list.size(); ++i) {
+    //     std::cout << "Package " << mess.package_list[i]->id << " :\t" << mess.package_list[i]->data << std::endl;
+    // }
 }
