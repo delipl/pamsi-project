@@ -10,13 +10,24 @@ template <typename T>
 class Heap {
    public:
     Heap() = default;
+    ~Heap(){
+        if(tab != nullptr){
+            delete[] tab;
+        }
+    };
 
-    void push(const T elem) {
-        ++actual_size;
+    void push(T elem) {
+
         auto *ptr = new T[actual_size];
-        memcpy(ptr, tab, (actual_size - 1) * sizeof(T));
+        for (auto i = 0u; i < actual_size; i++){
+            ptr[i] = tab[i];
+        }
         delete[] tab;
-        tab = ptr;
+        ++actual_size;
+        tab = new T[actual_size];
+        for (auto i = 0u; i < actual_size-1; i++) {
+            tab[i] = ptr[i];
+        }
 
         tab[actual_size - 1] = elem;
 
@@ -32,15 +43,17 @@ class Heap {
     T pop() {
         --actual_size;
         auto return_val = tab[0];
-
         tab[0] = tab[actual_size];
+
         auto *ptr = new T[actual_size];
-        memcpy(ptr, tab, (actual_size) * sizeof(T));
+        for (auto i = 0u; i < actual_size; i++) {
+            ptr[i] = tab[i];
+        }
         delete[] tab;
         tab = ptr;
 
-        auto i = 0;
-        while (tab[i] > tab[childs(i).first] || tab[i] > tab[childs(i).second] && i < actual_size && actual_size != 0) {
+        auto i = 0u;
+        while ((tab[i] > tab[childs(i).first] || tab[i] > tab[childs(i).second]) && i < actual_size && actual_size != 0) {
             auto j = tab[childs(i).first] > tab[childs(i).second] ? childs(i).second : childs(i).first;
             if(!j){
                 break;
@@ -62,6 +75,9 @@ class Heap {
     std::size_t actual_size = 0;
 
     std::size_t parent(const std::size_t &child) {
+        if(not child){
+            return 0;
+        }
         return (child - 1) / 2;
     }
 
