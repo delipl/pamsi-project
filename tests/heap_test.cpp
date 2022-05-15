@@ -59,3 +59,4 @@ TEST_CASE("Package heap") {
     heap.push(pamsi::Package());
     CHECK(heap.size() == 1);
 }
+

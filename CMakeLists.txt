@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.14)
 # Set project name, version and laguages here. (change as needed)
 # Version numbers are available by including "exampleConfig.h" in
 # the source. See exampleConfig.h.in for some more details.
-project(CPP_BOILERPLATE VERSION 1.0.0.0 LANGUAGES CXX)
+project(pamsi VERSION 1.0.0.0 LANGUAGES CXX)
 
 
 # Options: Things you can set via commandline options to cmake (e.g. -DENABLE_LTO=[ON|OFF])
@@ -19,6 +19,7 @@ option(ENABLE_WARNINGS_SETTINGS "Allow target_set_warnings to add flags and defi
 option(ENABLE_LTO "Enable link time optimization" ON)
 option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
                         Tests in tests/*.cpp will still be enabled." ON)
+option(ENABLE_CSVPP "Enable csvcpp library" ON)
 
 # Include stuff. No change needed.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
@@ -64,7 +65,8 @@ target_link_libraries(${LIBRARY_NAME} PUBLIC doctest)
 # Add an executable for the file app/main.cpp.
 # If you add more executables, copy these lines accordingly.
 add_executable(main app/main.cpp)   # Name of exec. and location of file.
-target_link_libraries(main PRIVATE ${LIBRARY_NAME})  # Link the executable to library (if it uses it).
+# target_link_libraries(main PRIVATE csvpp)  # Link the executable to library (if it uses it).
+target_include_directories(main PRIVATE include/)
 target_set_warnings(main ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
 target_enable_lto(main optimized)  # enable link-time-optimization if available for non-debug configurations
 
