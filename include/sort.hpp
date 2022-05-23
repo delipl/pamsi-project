@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <iostream>
 
 namespace pamsi {
 template <typename it>
@@ -35,6 +36,28 @@ void merge_sort(it left, it right) {
     merge_sort(left, mid);
     merge_sort(mid, right);
     merge(left, mid, right);
+}
+
+template <typename it>
+it part(it begin, it end, typename it::value_type pivot) {
+    auto left = begin;
+    auto new_pivot = begin;
+    while(left != end){
+        if (pivot >= *left and new_pivot != std::prev(end)) {
+            std::iter_swap(left, new_pivot++);
+        }
+        ++left;
+    }
+    return new_pivot;
+}
+
+template <typename it>
+void quick_sort(it begin, it end) {
+    if (std::distance(begin, end) <= 1) return;
+    typename it::value_type pivot = *(std::prev(end));
+    auto splitter = part(begin, end, pivot);
+    quick_sort(begin, splitter);
+    quick_sort(splitter, end);
 }
 
 }  // namespace pamsi

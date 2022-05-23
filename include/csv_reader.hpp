@@ -20,7 +20,6 @@ class CSVReader {
         for (auto i = 0u; i < data_size; ++i) {
             file_stream >> one;
             data_.push_back(one);
-            one = Package();
         }
         file_stream.close();
     };

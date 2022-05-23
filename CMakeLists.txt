@@ -11,6 +11,7 @@ cmake_minimum_required(VERSION 3.14)
 # Version numbers are available by including "exampleConfig.h" in
 # the source. See exampleConfig.h.in for some more details.
 project(pamsi VERSION 1.0.0.0 LANGUAGES CXX)
+# set_property(TARGET pamsi PROPERTY CXX_STANDARD 20)
 
 
 # Options: Things you can set via commandline options to cmake (e.g. -DENABLE_LTO=[ON|OFF])

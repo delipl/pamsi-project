@@ -17,7 +17,8 @@ struct Package {
     Package(const std::size_t id, const std::string& data, const double rate)
         : id{id}, data{data}, rate{rate} {};
 
-    Package(const Package& other) = default;
+    Package(const Package& other)
+        : id{other.id}, data{other.data}, rate{other.rate} {};
 };
 
 std::istream& operator>>(std::istream& is, Package& d) {
