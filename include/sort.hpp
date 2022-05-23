@@ -1,9 +1,9 @@
 #pragma once
 
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <vector>
-#include <iostream>
 
 namespace pamsi {
 template <typename it>
@@ -42,7 +42,7 @@ template <typename it>
 it part(it begin, it end, typename it::value_type pivot) {
     auto left = begin;
     auto new_pivot = begin;
-    while(left != end){
+    while (left != end) {
         if (pivot >= *left and new_pivot != std::prev(end)) {
             std::iter_swap(left, new_pivot++);
         }
@@ -60,4 +60,16 @@ void quick_sort(it begin, it end) {
     quick_sort(splitter, end);
 }
 
+template <typename it>
+void insert_sort(it begin, it end) {
+    auto left = begin;
+    while (std::prev(end) != left++) {
+        auto pivot = std::prev(left);
+        auto back = left;
+        while (*back < *pivot) {
+            std::iter_swap(back--, pivot--);
+        }
+    }
+
+}
 }  // namespace pamsi
