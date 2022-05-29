@@ -1,9 +1,11 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include "heap.tpp"
 
 namespace pamsi {
 template <typename it>
@@ -70,6 +72,53 @@ void insert_sort(it begin, it end) {
             std::iter_swap(back--, pivot--);
         }
     }
+}
+template <typename it>
+void print_iters(it begin, it end) {
+    std::for_each(begin, end, [begin](auto &i) {
+        std::cout
+            << i.rate << "\t";
+    });
+    std::cout << "\n";
+}
+template <typename it>
+void bucket_sort(it begin, it end, std::size_t number_of_buckets) {
+    auto size = std::distance(begin, end);
+    std::vector<std::vector<typename it::value_type>> buckets(number_of_buckets);
 
+    auto max_value = *begin;
+    std::for_each(begin, end, [begin, &max_value](auto &elem) {
+        max_value = elem > max_value ? elem : max_value;
+    });
+
+    for (auto i = begin; i != end; ++i) {
+        int bucket = std::floor(*i / (max_value + 1) * number_of_buckets);
+        auto obj = Package(*i);
+        buckets[bucket].push_back(obj);
+    }
+
+    auto left = begin;
+    std::for_each(buckets.begin(), buckets.end(), [&buckets, &left, &begin, &end](auto &bucket) {
+        insert_sort(bucket.begin(), bucket.end());
+        left += bucket.size();
+    });
+
+    auto iter = begin;
+    for (auto &bucket : buckets) {
+        std::copy(bucket.begin(), bucket.end(), iter);
+        iter += bucket.size();
+    }
+}
+
+template <typename it>
+void heap_sort(it begin, it end) {
+    Heap<typename it::value_type> heap;
+    for (auto i = begin; i != end; ++i) {
+        auto obj = Package(*i);
+        heap.push(obj);
+    }
+    for (auto i = begin; i != end; ++i) {
+        *i = heap.pop();
+    }
 }
 }  // namespace pamsi

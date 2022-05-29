@@ -14,11 +14,14 @@ struct Package {
     double rate{std::numeric_limits<double>::quiet_NaN()};
 
     Package() = default;
+    ~Package() = default;
     Package(const std::size_t id, const std::string& data, const double rate)
         : id{id}, data{data}, rate{rate} {};
 
     Package(const Package& other)
         : id{other.id}, data{other.data}, rate{other.rate} {};
+
+    operator double() const { return rate; };
 };
 
 std::istream& operator>>(std::istream& is, Package& d) {
@@ -32,7 +35,7 @@ std::istream& operator>>(std::istream& is, Package& d) {
             std::string add;
             std::getline(is, name, '"');
             std::getchar();
-            d.data = name + add;
+            d.data = "dupa";
         }
     }
     if (std::getline(is, rate)) {

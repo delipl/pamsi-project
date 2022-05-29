@@ -10,22 +10,25 @@ template <typename T>
 class Heap {
    public:
     Heap() = default;
-    ~Heap(){
-        if(tab != nullptr){
+    ~Heap() {
+        if (tab != nullptr) {
             delete[] tab;
         }
     };
 
     void push(T elem) {
-
         auto *ptr = new T[actual_size];
-        for (auto i = 0u; i < actual_size; i++){
+        for (auto i = 0u; i < actual_size; i++) {
             ptr[i] = tab[i];
         }
-        delete[] tab;
+
+        // if (tab != nullptr) {
+        //     delete[] tab;
+        // }
+
         ++actual_size;
         tab = new T[actual_size];
-        for (auto i = 0u; i < actual_size-1; i++) {
+        for (auto i = 0u; i < actual_size - 1; i++) {
             tab[i] = ptr[i];
         }
 
@@ -55,7 +58,7 @@ class Heap {
         auto i = 0u;
         while ((tab[i] > tab[childs(i).first] || tab[i] > tab[childs(i).second]) && i < actual_size && actual_size != 0) {
             auto j = tab[childs(i).first] > tab[childs(i).second] ? childs(i).second : childs(i).first;
-            if(!j){
+            if (!j) {
                 break;
             }
             auto temp = tab[i];
@@ -75,7 +78,7 @@ class Heap {
     std::size_t actual_size = 0;
 
     std::size_t parent(const std::size_t &child) {
-        if(not child){
+        if (not child) {
             return 0;
         }
         return (child - 1) / 2;
@@ -84,11 +87,10 @@ class Heap {
     std::pair<std::size_t, std::size_t> childs(const std::size_t &parent) {
         auto first = 2 * parent + 1;
         auto second = 2 * parent + 2;
-        if(first >= actual_size){
+        if (first >= actual_size) {
             first = 0;
             second = 0;
-        }
-        else if(second >= actual_size){
+        } else if (second >= actual_size) {
             second = 0;
         }
         return {first, second};
