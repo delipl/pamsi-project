@@ -10,7 +10,7 @@ namespace pamsi {
 
 struct Package {
     std::size_t id;
-    std::string data;
+    std::string data = "";
     double rate{std::numeric_limits<double>::quiet_NaN()};
 
     Package() = default;
@@ -26,21 +26,33 @@ struct Package {
 
 std::istream& operator>>(std::istream& is, Package& d) {
     std::string id;
-    std::string name;
+    std::string name, temp;
     std::string rate;
 
     if (std::getline(is, id, ',') and std::getline(is, name, ',')){
-        d.id = std::stoi(id);
         if(name.find('"') != std::string::npos){
             std::string add;
-            std::getline(is, name, '"');
-            std::getchar();
-            d.data = "dupa";
+            std::getline(is, temp, '"');
+            name = name.substr(1, name.length()) + "," + temp;
+            is.get();
         }
+        try {
+            d.id = std::stoi(id);
+        } catch (const std::exception& e) {
+            d.id = 0;
+            throw std::runtime_error("BAD ID");
+        }
+        d.data = name;
     }
     if (std::getline(is, rate)) {
-        d.rate = std::stod(rate);
+        try{
+            d.rate = std::stod(rate);
+        } catch (const std::exception& e) {
+            d.rate = 0.0;
+            throw std::runtime_error("BAD rate");
+        }
     }
+
     return is;
 }
 

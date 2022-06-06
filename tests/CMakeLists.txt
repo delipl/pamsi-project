@@ -4,7 +4,9 @@ cmake_minimum_required(VERSION 3.14)
 set(TESTFILES        # All .cpp files in tests/
     main.cpp
     # heap_test.cpp
-    csv_test.cpp
+    # sort_test.cpp
+    # csv_test.cpp
+    time_sort.cpp
 )
 
 set(TEST_MAIN unit_tests)   # Default name for test executable (change if you wish).

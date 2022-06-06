@@ -1,64 +1,26 @@
 #include "csv_reader.hpp"
 #include "doctest/doctest.h"
-#include "sort.hpp"
 
 TEST_CASE("CSV constructor") {
-    CHECK_NOTHROW(pamsi::CSVReader csv("projekt2_dane.csv", 10));
+    CHECK_NOTHROW(pamsi::CSVReader csv("../dane.csv", 10));
 }
 
-TEST_CASE("CSV constructor") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 10);
-    CHECK(csv.data()[0] == pamsi::Package(0, "After Life (2019– )", 9.0));
+// TEST_CASE("CSV constructor") {
+//     pamsi::CSVReader csv("../dane.csv", 10);
+//     CHECK(csv.data()[0] == pamsi::Package(0, "After Life (2019– )", 9.0));
+//     CHECK(csv.data()[9].rate == 2.0);
 
-    CHECK(csv.data()[9].rate == 2.0);
-}
+//     CHECK(csv.data()[0].data == "After Life (2019– )");
+// }
 
-TEST_CASE("Merge sort") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 10);
-    auto vec = csv.data();
-    CHECK_NOTHROW(pamsi::merge_sort(vec.begin(), vec.end()));
-    auto first = vec.begin();
-    std::for_each(vec.begin() + 1, vec.end(), [first](auto &i) { CHECK(*first <= i); first; });
-}
-
-TEST_CASE("quick sort") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 14);
-    static auto vec = csv.data();
-    CHECK_NOTHROW(pamsi::quick_sort(vec.begin(), vec.end()));
-    auto first = vec.begin();
-    std::for_each(vec.begin() + 1, vec.end(), [&first](auto &i) { CHECK(*first <= i); first++; });
-}
-
-TEST_CASE("insert sort") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 8);
-    static auto vec = csv.data();
-    CHECK_NOTHROW(pamsi::insert_sort(vec.begin(), vec.end()));
-    auto first = vec.begin();
-    std::for_each(vec.begin() + 1, vec.end(), [&first](auto &i) {
-        CHECK(*first <= i);
-        first++;
+TEST_CASE("CSV constructor long") {
+    auto i = 962900u;
+    CHECK_NOTHROW(pamsi::CSVReader csv("../dane.csv", i));
+    pamsi::CSVReader csv("../dane.csv", i);
+    std::for_each(csv.data().begin(), csv.data().end(), [](auto &i) {
+        std::cout << "READ:\t" << i << std::endl;
     });
-}
+    pamsi::CSVReader csx("../dane.csv", i);
 
-TEST_CASE("buckeet sort") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 10);
-    static auto vec = csv.data();
-    auto first = vec.begin();
-    CHECK_NOTHROW(pamsi::bucket_sort(vec.begin(), vec.end(), 4));
-    std::for_each(vec.begin() + 1, vec.end(), [&first](auto &i) {
-        CHECK(*first <= i);
-        first++;
-    });
-}
-
-TEST_CASE("heap sort") {
-    pamsi::CSVReader csv("../projekt2_dane.csv", 10);
-    static auto vec = csv.data();
-    auto first = vec.begin();
-
-    CHECK_NOTHROW(pamsi::heap_sort(vec.begin(), vec.end()));
-    std::for_each(vec.begin() + 1, vec.end(), [&first](auto &i) {
-        CHECK(*first <= i);
-        first++;
-    });
+    pamsi::CSVReader csz("../dane.csv", i);
 }

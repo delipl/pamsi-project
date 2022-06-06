@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+
 #include "heap.tpp"
 
 namespace pamsi {
@@ -29,6 +30,7 @@ void merge(it begin, it mid, it end) {
 
     std::move(vec.begin(), vec.end(), begin);
 }
+
 template <typename it>
 void merge_sort(it left, it right) {
     auto size = std::distance(left, right);
@@ -120,5 +122,25 @@ void heap_sort(it begin, it end) {
     for (auto i = begin; i != end; ++i) {
         *i = heap.pop();
     }
+}
+
+template <typename it>
+void intro_sort_choose(it begin, it end, std::size_t max_depth) {
+    auto size = std::distance(begin, end);
+    if (size < 16) {
+        insert_sort(begin, end);
+    } else if (max_depth == 0) {
+        heap_sort(begin, end);
+    } else {
+        typename it::value_type pivot = *(std::prev(end));
+        auto splitter = part(begin, end, pivot);
+        intro_sort_choose(begin, splitter, max_depth - 1);
+        intro_sort_choose(splitter, end, max_depth - 1);
+    }
+}
+
+template <typename it>
+void intro_sort(it begin, it end) {
+    intro_sort_choose(begin, end, std::log2(std::distance(begin, end) * 2));
 }
 }  // namespace pamsi
