@@ -23,6 +23,7 @@ class CSVReader {
             try {
                 file_stream >> one;
             } catch (const std::runtime_error &e) {
+                --i;
                 continue;
             } catch (const std::out_of_range &e) {
                 break;

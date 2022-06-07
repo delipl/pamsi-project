@@ -43,24 +43,25 @@ void merge_sort(it left, it right) {
 }
 
 template <typename it>
-it part(it begin, it end, typename it::value_type pivot) {
+it part(it begin, it end) {
     auto left = begin;
-    auto new_pivot = begin;
+    auto pivot = begin;
     while (left != end) {
-        if (pivot >= *left and new_pivot != std::prev(end)) {
-            std::iter_swap(left, new_pivot++);
+        if (*left <= *end) {
+            std::iter_swap(++left, ++pivot);
+        } else {
+            ++left;
         }
-        ++left;
     }
-    return new_pivot;
+    std::iter_swap(pivot, end);
+    return pivot;
 }
 
 template <typename it>
 void quick_sort(it begin, it end) {
     if (std::distance(begin, end) <= 1) return;
-    typename it::value_type pivot = *(std::prev(end));
-    auto splitter = part(begin, end, pivot);
-    quick_sort(begin, splitter);
+    auto splitter = part(begin, end);
+    quick_sort(begin, splitter - 1);
     quick_sort(splitter, end);
 }
 
@@ -70,11 +71,14 @@ void insert_sort(it begin, it end) {
     while (std::prev(end) != left++) {
         auto pivot = std::prev(left);
         auto back = left;
-        while (*back < *pivot) {
-            std::iter_swap(back--, pivot--);
+        while (*back < *pivot and back != begin) {
+            std::iter_swap(back, pivot);
+            --back;
+            --pivot;
         }
     }
 }
+
 template <typename it>
 void print_iters(it begin, it end) {
     std::for_each(begin, end, [begin](auto &i) {
@@ -84,63 +88,28 @@ void print_iters(it begin, it end) {
     std::cout << "\n";
 }
 template <typename it>
-void bucket_sort(it begin, it end, std::size_t number_of_buckets) {
+void bucket_sort(it begin, it end) {
     auto size = std::distance(begin, end);
-    std::vector<std::vector<typename it::value_type>> buckets(number_of_buckets);
 
-    auto max_value = *begin;
-    std::for_each(begin, end, [begin, &max_value](auto &elem) {
-        max_value = elem > max_value ? elem : max_value;
-    });
+    auto max_value = 10.0;
 
-    for (auto i = begin; i != end; ++i) {
-        int bucket = std::floor(*i / (max_value + 1) * number_of_buckets);
-        auto obj = Package(*i);
-        buckets[bucket].push_back(obj);
-    }
+    std::vector<std::vector<typename it::value_type>> buckets(max_value);
+
+    // for (auto i = begin; i != end; ++i) {
+    //     int bucket = std::floor(*i / (max_value + 1) *  max_value / 2);
+    //     auto obj = *i;
+    //     buckets[bucket].push_back(obj);
+    // }
 
     auto left = begin;
-    std::for_each(buckets.begin(), buckets.end(), [&buckets, &left, &begin, &end](auto &bucket) {
-        insert_sort(bucket.begin(), bucket.end());
-        left += bucket.size();
-    });
-
-    auto iter = begin;
+    for (auto i = begin; i != end; ++i) {
+        auto obj = *i;
+        buckets[*i-1].push_back(obj);
+    }
     for (auto &bucket : buckets) {
-        std::copy(bucket.begin(), bucket.end(), iter);
-        iter += bucket.size();
+        // insert_sort(bucket.begin(), bucket.end());
+        std::copy(bucket.begin(), bucket.end(), left);
+        left += bucket.size();
     }
-}
-
-template <typename it>
-void heap_sort(it begin, it end) {
-    Heap<typename it::value_type> heap;
-    for (auto i = begin; i != end; ++i) {
-        auto obj = Package(*i);
-        heap.push(obj);
-    }
-    for (auto i = begin; i != end; ++i) {
-        *i = heap.pop();
-    }
-}
-
-template <typename it>
-void intro_sort_choose(it begin, it end, std::size_t max_depth) {
-    auto size = std::distance(begin, end);
-    if (size < 16) {
-        insert_sort(begin, end);
-    } else if (max_depth == 0) {
-        heap_sort(begin, end);
-    } else {
-        typename it::value_type pivot = *(std::prev(end));
-        auto splitter = part(begin, end, pivot);
-        intro_sort_choose(begin, splitter, max_depth - 1);
-        intro_sort_choose(splitter, end, max_depth - 1);
-    }
-}
-
-template <typename it>
-void intro_sort(it begin, it end) {
-    intro_sort_choose(begin, end, std::log2(std::distance(begin, end) * 2));
 }
 }  // namespace pamsi

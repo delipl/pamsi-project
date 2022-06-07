@@ -14,13 +14,19 @@ TEST_CASE("CSV constructor") {
 // }
 
 TEST_CASE("CSV constructor long") {
-    auto i = 962900u;
+    auto i = 962800;
     CHECK_NOTHROW(pamsi::CSVReader csv("../dane.csv", i));
     pamsi::CSVReader csv("../dane.csv", i);
     std::for_each(csv.data().begin(), csv.data().end(), [](auto &i) {
-        std::cout << "READ:\t" << i << std::endl;
+        CHECK(i != 0.0);
     });
-    pamsi::CSVReader csx("../dane.csv", i);
+    // pamsi::CSVReader csx("../dane.csv", i);
+    // std::for_each(csx.data().begin(), csx.data().end(), [](auto &i) {
+    //     CHECK(i != 0.0);
+    // });
 
-    pamsi::CSVReader csz("../dane.csv", i);
+    // pamsi::CSVReader csz("../dane.csv", i);
+    // std::for_each(csz.data().begin(), csz.data().end(), [](auto &i) {
+    //     CHECK(i != 0.0);
+    // });
 }

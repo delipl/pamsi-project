@@ -22,9 +22,9 @@ class Heap {
             ptr[i] = tab[i];
         }
 
-        // if (tab != nullptr) {
-        //     delete[] tab;
-        // }
+        if (tab != nullptr) {
+            delete[] tab;
+        }
 
         ++actual_size;
         tab = new T[actual_size];
