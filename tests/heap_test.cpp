@@ -24,7 +24,6 @@ TEST_CASE("Heap Test") {
 
     CHECK(heap.pop() == 12);
     CHECK(heap.size() == 1);
-
     CHECK(heap.pop() == 15);
     CHECK(heap.size() == 0);
 }

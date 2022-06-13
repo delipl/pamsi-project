@@ -6,7 +6,9 @@ set(TESTFILES        # All .cpp files in tests/
     # heap_test.cpp
     # sort_test.cpp
     # csv_test.cpp
-    time_sort.cpp
+    # time_sort.cpp
+    # tic_tac_toe_test.cpp
+    graph_test.cpp
 )
 
 set(TEST_MAIN unit_tests)   # Default name for test executable (change if you wish).

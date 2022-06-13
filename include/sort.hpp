@@ -95,19 +95,12 @@ void bucket_sort(it begin, it end) {
 
     std::vector<std::vector<typename it::value_type>> buckets(max_value);
 
-    // for (auto i = begin; i != end; ++i) {
-    //     int bucket = std::floor(*i / (max_value + 1) *  max_value / 2);
-    //     auto obj = *i;
-    //     buckets[bucket].push_back(obj);
-    // }
-
     auto left = begin;
     for (auto i = begin; i != end; ++i) {
         auto obj = *i;
         buckets[*i-1].push_back(obj);
     }
     for (auto &bucket : buckets) {
-        // insert_sort(bucket.begin(), bucket.end());
         std::copy(bucket.begin(), bucket.end(), left);
         left += bucket.size();
     }
